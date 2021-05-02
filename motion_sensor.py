@@ -38,4 +38,8 @@ class MoSensor(object):
                 break
 
     def get_state(self):
-        return self.current_state
+        if self.current_state == 1:
+            return "movement detected"
+        else:
+            return "no movement"
+
