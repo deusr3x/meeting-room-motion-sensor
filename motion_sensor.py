@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 import threading
+from collections import deque
 
 
 class MoSensor(object):
@@ -11,6 +12,7 @@ class MoSensor(object):
         self._running = False
         self._stop = threading.Event()
         GPIO.setup(self.pir_sensor, GPIO.IN)
+        self.history = deque(maxlen=60)
 
     def start(self):
         print("Starting sensor")
@@ -21,7 +23,6 @@ class MoSensor(object):
     def stop(self):
         self._running = False
         self._stop.set()
-        # GPIO.cleanup()
 
     def start_loop(self):
         self._stop.clear()
@@ -31,8 +32,9 @@ class MoSensor(object):
 
     def monitor(self):
         while self._running:
-            time.sleep(0.1)
+            time.sleep(1)
             self.current_state = GPIO.input(self.pir_sensor)
+            self.history.append(self.current_state)
             if self._stop.is_set():
                 print("stopping")
                 break
@@ -43,3 +45,8 @@ class MoSensor(object):
         else:
             return "no movement"
 
+    def get_history(self):
+        if sum(self.history) == 0:
+            return "no movement"
+        else:
+            return "movement detected"
