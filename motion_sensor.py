@@ -41,12 +41,12 @@ class MoSensor(object):
 
     def get_state(self):
         if self.current_state == 1:
-            return "movement detected"
+            return "occupied"
         else:
-            return "no movement"
+            return "unoccupied"
 
     def get_history(self):
         if sum(self.history) == 0:
-            return "no movement"
+            return "unoccupied"
         else:
-            return "movement detected"
+            return "occupied"
