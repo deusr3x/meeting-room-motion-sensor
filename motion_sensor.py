@@ -12,7 +12,7 @@ class MoSensor(object):
         self._running = False
         self._stop = threading.Event()
         GPIO.setup(self.pir_sensor, GPIO.IN)
-        self.history = deque(maxlen=60)
+        self.history = deque(maxlen=20)
 
     def start(self):
         print("Starting sensor")

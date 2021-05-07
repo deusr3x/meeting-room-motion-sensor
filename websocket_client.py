@@ -4,7 +4,7 @@ import json
 import time
 
 
-ROOM_NAME = 'c_188c9bc7tbb1shu3ngtt936nq9dos4g8e9nmmt1ecdnmq@resource.calendar.google.com'
+ROOM_NAME = ''
 SERVER_ADDR = 'http://0.0.0.0:8000' # change to server address
 
 sensor = MoSensor()
@@ -26,7 +26,11 @@ def run_loop():
 try:
     run_loop()
 except KeyboardInterrupt:
-    pass
-finally:
     sensor.stop()
+except Exception:
+    try:
+        sio.connect()
+    except:
+        pass
+finally:
     sio.disconnect()
